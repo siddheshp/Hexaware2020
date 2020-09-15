@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmsMvc.Models;
 using EmsMvc.Repositories;
+using EmsMvc_Repo_EFCoreCF.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -28,8 +30,12 @@ namespace EmsMvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<EmployeeContext>(options =>
+            {
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            });
             services.AddControllersWithViews();
-            services.AddSingleton<IRepository<Employee>, EmployeeRepository>();
+            services.AddScoped<IRepository<Employee>, EmployeeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

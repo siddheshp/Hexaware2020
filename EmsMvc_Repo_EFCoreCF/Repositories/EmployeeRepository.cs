@@ -1,4 +1,5 @@
 ﻿using EmsMvc.Models;
+using EmsMvc_Repo_EFCoreCF.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,32 +9,30 @@ namespace EmsMvc.Repositories
 {
     public class EmployeeRepository : IRepository<Employee>
     {
-        List<Employee> employeeList = new List<Employee>
-        {
-            new Employee
-            {
-                Id = 1,
-                Name = "Param",
-                DateOfJoining = new DateTime(2020, 9, 9),
-                Phone = 9988990098,
-                Email = "param@hexaware.com",
-                Gender = Gender.Male
-            },
-            new Employee
-            {
-                Id = 2,
-                Name = "Shona",
-                DateOfJoining = new DateTime(2020, 9, 9),
-                Phone = 9988990098,
-                Email = "shona@hexaware.com",
-                Gender = Gender.Female
-            }
-        };
+        private EmployeeContext context;
 
+        public EmployeeRepository(EmployeeContext context)
+        {
+            this.context = context;
+        }
         public bool Add(Employee entity)
         {
-            employeeList.Add(entity);
-            return true;
+            try
+            {
+                context.Employees.Add(entity);
+                int result = context.SaveChanges();
+                if (result > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                //log
+                throw ex; //throwing wrapper, no stack trace
+                //throw;      //rethrow
+            }
         }
 
         public bool Delete(object key)
@@ -44,14 +43,12 @@ namespace EmsMvc.Repositories
 
         public Employee Get(object key)
         {
-            return employeeList.Find(e => e.Id == Convert.ToInt32(key));
+            return context.Employees.Find(key);
         }
 
         public IEnumerable<Employee> Get()
         {
-            return employeeList;
-
-            //employeeList.Select()
+            return context.Employees;
         }
 
         public bool Update(Employee entity)
