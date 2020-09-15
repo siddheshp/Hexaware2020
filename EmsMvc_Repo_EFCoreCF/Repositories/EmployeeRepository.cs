@@ -1,5 +1,6 @@
 ﻿using EmsMvc.Models;
 using EmsMvc_Repo_EFCoreCF.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ namespace EmsMvc.Repositories
 
         public Employee Get(object key)
         {
+            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             return context.Employees.Find(key);
         }
 
@@ -53,9 +55,22 @@ namespace EmsMvc.Repositories
 
         public bool Update(Employee entity)
         {
-            //find emp
-            // if found, update
-            throw new NotImplementedException();
+            try
+            {
+                context.Entry(entity).State = EntityState.Modified;
+                //context.Employees.Update(entity);
+                int result = context.SaveChanges();
+                if (result > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                //log
+                throw ex;
+            }
         }
     }
 }

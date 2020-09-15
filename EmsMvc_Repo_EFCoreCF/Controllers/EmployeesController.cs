@@ -50,7 +50,7 @@ namespace EmsMvc.Controllers
                     if (isAdded)
                     {
                         return RedirectToAction(nameof(Index));
-                    }                    
+                    }
                 }
             }
             catch
@@ -63,22 +63,56 @@ namespace EmsMvc.Controllers
         // GET: EmployeesController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            //check if employee exist
+            var employee = repository.Get(id);
+            // does not exist
+            if (employee == null)
+            {
+                //redirect Index
+                return RedirectToAction(nameof(Index));
+            }
+            //emp exists
+            return View(employee);
         }
 
         // POST: EmployeesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Employee employee)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    //man in the middle attack
+                    if (id == employee.Id)
+                    {
+                        var existingEmp = repository.Get(id);
+                        // does not exist
+                        if (existingEmp == null)
+                        {
+                            return NotFound("Employee not found");
+                        }
+                        var isUpdated = repository.Update(employee);
+                        if (isUpdated)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+                }
+                //check if emp exists
+                //modelstate? SSV
+                // repository.update()
+                //if success
+                
+                // esle
+                // remain on same view
             }
             catch
             {
                 return View();
             }
+            return View();
         }
 
         // GET: EmployeesController/Delete/5
