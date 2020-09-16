@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Repositories
 {
-    public class EmployeeRepository : IRepository<Employee>
+    public class EmployeeRepository : IEmployeeRepository
     {
         private EmployeeContext context;
 
@@ -20,6 +20,9 @@ namespace EmployeeService.Repositories
         {
             try
             {
+                //check if emp exists
+                //yes, update
+                //no, insert
                 context.Employees.Add(entity);
                 int result = context.SaveChanges();
                 if (result > 0)
@@ -69,6 +72,18 @@ namespace EmployeeService.Repositories
         public IEnumerable<Employee> Get()
         {
             return context.Employees;
+        }
+
+        public IEnumerable<Employee> GetByGender(Gender gender)
+        {
+            try
+            {
+                return context.Employees.Where(e => e.Gender == gender);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool Update(Employee entity)
