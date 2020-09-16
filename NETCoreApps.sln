@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmsMvc_Repo_Inmemory", "Ems
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmsMvc_Repo_EFCoreCF", "EmsMvc_Repo_EFCoreCF\EmsMvc_Repo_EFCoreCF.csproj", "{E9A0AC2E-F87D-447B-AD5B-697B94B4F4BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsMvc_Repo_EFCore_CF_MultiModel", "EmsMvc_Repo_EFCore_CF_MultiModel\EmsMvc_Repo_EFCore_CF_MultiModel.csproj", "{6E4DCDC5-F221-465C-9255-02112C78DE52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E9A0AC2E-F87D-447B-AD5B-697B94B4F4BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9A0AC2E-F87D-447B-AD5B-697B94B4F4BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9A0AC2E-F87D-447B-AD5B-697B94B4F4BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

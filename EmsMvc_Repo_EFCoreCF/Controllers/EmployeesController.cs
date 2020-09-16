@@ -118,7 +118,16 @@ namespace EmsMvc.Controllers
         // GET: EmployeesController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            //check if employee exist
+            var employee = repository.Get(id);
+            // does not exist
+            if (employee == null)
+            {
+                //redirect Index
+                return NotFound("Employee not found");
+            }
+            //emp exists
+            return View(employee);
         }
 
         // POST: EmployeesController/Delete/5
@@ -128,12 +137,17 @@ namespace EmsMvc.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var isDeleted = repository.Delete(id);
+                if (isDeleted)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
             catch
             {
                 return View();
             }
+            return View();
         }
     }
 }

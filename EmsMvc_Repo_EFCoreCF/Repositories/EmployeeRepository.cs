@@ -38,14 +38,34 @@ namespace EmsMvc.Repositories
 
         public bool Delete(object key)
         {
-            //employeeList.Remove()
-            return true;
+            // update flag
+            var emp = Get(key);
+            if (emp == null)
+            {
+                return false;
+            }
+            try
+            {
+                context.Employees.Remove(emp);
+                int result = context.SaveChanges();
+                if (result > 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public Employee Get(object key)
         {
             context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             return context.Employees.Find(key);
+            //context.Employees.FirstOrDefault(e => e.Id == Convert.ToInt32(key)
+            //&& e.flag);
         }
 
         public IEnumerable<Employee> Get()
