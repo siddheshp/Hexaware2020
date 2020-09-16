@@ -5,24 +5,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmsMvc_Repo_EFCore_CF_MultiModel.Models
+namespace EmployeeService.Models
 {
-    public class Project
+    public class Employee
     {
-        public Project()
-        {
-            Employees = new HashSet<Employee>();
-        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Client { get; set; }
+        [DataType(DataType.Date)]
+        //to be past
+        public DateTime DateOfJoining { get; set; }
+        [EmailAddress]
         [Required]
-        public int ProjectManager { get; set; }
-        public virtual ICollection<Employee> Employees { get; set; }
-        public virtual Department Department { get; set; }
+        public string Email { get; set; }
+        [Required]
+        [Range(1000000000, 9999999999)]
+        public long Phone { get; set; }
+        [Required]
+        public Gender Gender { get; set; }
     }
 }

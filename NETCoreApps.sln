@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmsMvc_Repo_EFCoreCF", "Ems
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmsMvc_Repo_EFCore_CF_MultiModel", "EmsMvc_Repo_EFCore_CF_MultiModel\EmsMvc_Repo_EFCore_CF_MultiModel.csproj", "{6E4DCDC5-F221-465C-9255-02112C78DE52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EMSServices", "EMSServices", "{7078576A-43D1-4BC3-94C9-1216308BDB7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeService", "EmployeeService\EmployeeService.csproj", "{4CA2468C-0BCE-4D20-B3A3-A78DDC052A37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E4DCDC5-F221-465C-9255-02112C78DE52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA2468C-0BCE-4D20-B3A3-A78DDC052A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA2468C-0BCE-4D20-B3A3-A78DDC052A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA2468C-0BCE-4D20-B3A3-A78DDC052A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA2468C-0BCE-4D20-B3A3-A78DDC052A37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4CA2468C-0BCE-4D20-B3A3-A78DDC052A37} = {7078576A-43D1-4BC3-94C9-1216308BDB7A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5B51FC9-B908-48DC-8DE4-F79FA2AAE077}

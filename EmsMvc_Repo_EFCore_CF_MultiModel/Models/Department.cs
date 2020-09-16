@@ -21,6 +21,7 @@ namespace EmsMvc_Repo_EFCore_CF_MultiModel.Models
         public string Name { get; set; }
         [Required]
         public string Location { get; set; }
+
         //nav properties
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
