@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmployeeService.Models;
 using EmployeeService.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/[controller]/v1")]
+    [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="User")]
     public class EmployeesController : ControllerBase
     {
         private IEmployeeRepository repository;

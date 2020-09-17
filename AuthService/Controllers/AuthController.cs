@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AuthService.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Controllers
 {
@@ -31,7 +36,7 @@ namespace AuthService.Controllers
         }
 
         [HttpPost("register")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Register([FromForm] RegisterDto registerDto)
         {
             if (!ModelState.IsValid)
@@ -49,7 +54,7 @@ namespace AuthService.Controllers
                 {
                     var user = new IdentityUser
                     {
-                        UserName = registerDto.UserName,
+                        UserName = registerDto.Email,
                         Email = registerDto.Email,
                         NormalizedEmail = registerDto.Email
                     };
@@ -74,6 +79,91 @@ namespace AuthService.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromForm] LoginDto loginDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await signInManager.PasswordSignInAsync(
+                loginDto.Email, loginDto.Password, false, false);
+            if (result.Succeeded)
+            {
+                //generate token
+                var user = userManager.Users.SingleOrDefault(
+                    u => u.Email == loginDto.Email);
+                var response = await GenerateJwtToken(user);
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+        }
+
+        private async Task<TokenDto> GenerateJwtToken(IdentityUser user)
+        {
+            var roles = await userManager.GetRolesAsync(user);
+            var role = roleManager.Roles.SingleOrDefault(
+                r => r.Name == roles.SingleOrDefault());
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Role, role.Name)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                configuration["JwtKey"]));
+            var creds = new SigningCredentials(key,
+                SecurityAlgorithms.HmacSha256);
+            // recommednded is 5 mins
+            var expires = DateTime.Now.AddDays(
+                Convert.ToDouble(configuration["JwtExpireDays"]));
+
+            var token = new JwtSecurityToken(
+                configuration["JwtIssuer"],
+                configuration["JwtIssuer"],
+                claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+            //store db/cache
+
+            var response = new TokenDto
+            {
+                Email = user.Email,
+                Token = jwtToken,
+                Role = role.Id
+            };
+
+            return response;
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<ActionResult> Logout()
+        {
+            try
+            {
+                //cache/db
+                await signInManager.SignOutAsync();
+            }
+            catch (Exception)
+            {
+                //InternalServerError
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Logout failed");
+            }
+
+            return Ok();
         }
     }
 }
