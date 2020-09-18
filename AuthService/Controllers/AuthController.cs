@@ -15,6 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthService.Controllers
 {
+    /// <summary>
+    /// Auth microservice to register and login 
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -35,6 +38,11 @@ namespace AuthService.Controllers
             this.configuration = configuration;
         }
 
+        /// <summary>
+        /// Registers a new user
+        /// </summary>
+        /// <param name="registerDto">User paramemters to register</param>
+        /// <returns>Token, if successful; Bad request with error details otherwise.</returns>
         [HttpPost("register")]
         //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Register([FromForm] RegisterDto registerDto)
@@ -147,6 +155,10 @@ namespace AuthService.Controllers
             return response;
         }
 
+        /// <summary>
+        /// Logs out authenticated user
+        /// </summary>
+        /// <returns>Success, if logout is successfull; Error, otherwise</returns>
         [HttpPost("logout")]
         [Authorize]
         public async Task<ActionResult> Logout()

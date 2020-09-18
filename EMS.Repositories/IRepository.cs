@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EmployeeService.Repositories
+namespace EMS.Repositories
 {
     public interface IRepository<T>
     {

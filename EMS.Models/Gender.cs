@@ -1,8 +1,8 @@
-﻿namespace EmployeeService.Models
+﻿namespace EMS.Models
 {
     public enum Gender
     {
         Female = 1,
-        Male
+        male
     }
 }

@@ -10,10 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
 
-namespace ApiGateway
+namespace ProjectService
 {
     public class Startup
     {
@@ -28,17 +26,6 @@ namespace ApiGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddOcelot(Configuration);
-            services.AddCors(options => options.AddPolicy("EMSPolicy", policy =>
-              {
-                  policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader();
-                  //policy.WithOrigins(new[] { "https://*.mydomain.com", "*.emsspa.com" })
-                  //      .WithMethods(new[] { "GET", "PUT", "POST" })
-                  //      .WithHeaders(new[] { "XYZ" });
-              }));
-            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,25 +37,15 @@ namespace ApiGateway
             }
 
             app.UseHttpsRedirection();
-            app.UseSwagger();
-
-            if (env.IsDevelopment())
-            {
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "EMS Employee API V1");
-                });
-            }
 
             app.UseRouting();
-            app.UseCors("EMSPolicy");
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            app.UseOcelot().Wait();
         }
     }
 }

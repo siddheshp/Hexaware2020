@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EmployeeService.Models
+namespace EMS.Models
 {
     public class Employee
     {
@@ -26,5 +23,9 @@ namespace EmployeeService.Models
         public long Phone { get; set; }
         [Required]
         public Gender Gender { get; set; }
+
+        // nav properties
+        public virtual Department Department { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

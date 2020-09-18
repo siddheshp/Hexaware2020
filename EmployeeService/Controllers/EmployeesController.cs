@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EmployeeService.Models;
 using EmployeeService.Repositories;
+using EMS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ namespace EmployeeService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="User")]
+    
     public class EmployeesController : ControllerBase
     {
         private IEmployeeRepository repository;
@@ -24,6 +24,7 @@ namespace EmployeeService.Controllers
         }
         // GET: api/<EmployeesController>
         [HttpGet]
+        [Authorize]
         public IEnumerable<Employee> Get()
         {
             return repository.Get();

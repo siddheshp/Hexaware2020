@@ -4,8 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EmployeeService.Data;
-using EmployeeService.Repositories;
+using DeptService.Data;
+using DeptService.Repositories;
+using EMS.Models;
+using EMS.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EmployeeService
+namespace DeptService
 {
     public class Startup
     {
@@ -29,16 +31,15 @@ namespace EmployeeService
 
         public IConfiguration Configuration { get; }
 
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<EmployeeContext>(options =>
+            services.AddDbContext<DeptContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddControllers().AddXmlSerializerFormatters();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IRepository<Department>, DeptRepository>();
             //JWT
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
             services.AddAuthentication(options =>
@@ -85,7 +86,6 @@ namespace EmployeeService
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "EMS Employee API V1");
                 });
             }
-
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
