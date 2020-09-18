@@ -13,6 +13,18 @@
       "UpstreamPathTemplate": "/authservice"
     },
     {
+      //auth service: https:localhost:44368/api/auth
+      "DownstreamPathTemplate": "/api/auth/{param}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44368
+        }
+      ],
+      "UpstreamPathTemplate": "/authservice/{param}"
+    },
+    {
       //https:localhost:44390/api/employees
       "DownstreamPathTemplate": "/api/employees",
       "DownstreamScheme": "https",
@@ -23,6 +35,18 @@
         }
       ],
       "UpstreamPathTemplate": "/employeeservice"
+    },
+    {
+      //https:localhost:44390/api/employees
+      "DownstreamPathTemplate": "/api/employees/{param}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44390
+        }
+      ],
+      "UpstreamPathTemplate": "/employeeservice/{param}"
     }
   ],
   "GlobalConfiguration": {
